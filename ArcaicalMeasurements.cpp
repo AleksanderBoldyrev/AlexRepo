@@ -1,5 +1,5 @@
-/*Задание: Перевести длину, данную в саженях, аршинах и вершках в метры.
-*******Болдырев Александр 13501/3********/
+/*Task: The conversion between the SI system and old russian measures.
+*******Boldyrev Alexander 13501/3********/
 #include <iostream>
 using namespace std;
 
@@ -15,6 +15,6 @@ int main()
     cin>> z;
     cout << endl;
     cout << "Now, let's turn it into meter's measurement: ";
-    cout << x*2.1336 + y*0.7112 + z*0.04445 << " meters" << endl;
+    cout << x * 2.1336 + y * 0.7112 + z * 0.04445 << " meters" << endl;
     return 0;
 }
