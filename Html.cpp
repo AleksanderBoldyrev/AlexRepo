@@ -9,45 +9,50 @@
 using namespace std;
 
 //==== Main function decomposition ====
-void MainGen();
-void HeadGen();
-void BodyGen();
-void TextGen();
-void H1Gen();
-void H2Gen();
+
+void MainGen	();
+void HeadGen	();
+void BodyGen	();
+void TextGen	();
+void H1Gen	();
+void H2Gen	();
 void SimpListGen();
-void NumListGen();
+void NumListGen	();
 void ListItemGen();
-void TabGen();
-void Enters();
-void ItGen();
-void BItGen();
-void Closer();
+void TabGen	();
+void Enters	();
+void ItGen	();
+void BItGen	();
+void Closer	();
 
 //==== Files which we are using ====
+
 ifstream iFile("Input.txt");
 ofstream oFile("Result.htm");
 
 //==== Global variables ====
+
 char sym[1];
 char lists[50];					//ul = "u", ol = "o". Oh yes, Cap! ;)
-bool hdrsng = false;
-bool hdrdbl = false;
-int tabs = 0;
-bool aftertab = false;
-int inlist = 0;
-int inlistp = 0;
-bool inli = false;
-bool index = false;
-bool inpar = false;
-bool first = true;
-bool it = false;
-bool bit = false;
+bool hdrsng 	= false;
+bool hdrdbl 	= false;
+int  tabs 	= 0;
+bool aftertab 	= false;
+int  inlist 	= 0;
+int  inlistp 	= 0;
+bool inli 	= false;
+bool index 	= false;
+bool inpar 	= false;
+bool first 	= true;
+bool it 	= false;
+bool bit 	= false;
 
 //==== The main program ====
+
 int main()
 {
     //==== Input/output setup ====
+    
     if (!iFile)
     {
         cout << "Error: input file does not exist!" << endl;
@@ -60,6 +65,7 @@ int main()
     }
 
     //==== Main algorithm ====
+    
     MainGen();
     return 0;
 }
@@ -67,6 +73,7 @@ int main()
 //============ AUXILARY FUNCTIONS ============
 
 //==== The main function ====
+
 void MainGen()
 {
     oFile << "<!DOCTYPE html>\n";
@@ -77,6 +84,7 @@ void MainGen()
 }
 
 //==== The header creating function ====
+
 void HeadGen()
 {
     oFile << "\n<HEAD>\n";
@@ -86,15 +94,17 @@ void HeadGen()
 }
 
 //==== The body creating function ====
+
 void BodyGen()
 {
     oFile << "\n<BODY bgcolor = \"#000000\" text = \"#00FF00\">\n";
     sym[1] = '\0';
-	TextGen();
+    TextGen();
     oFile << "\n</BODY>\n";
 }
 
 //==== The inner component of the body ====
+
 void TextGen()
 {
     iFile.get(sym[0]);
@@ -104,7 +114,7 @@ void TextGen()
        {
             first = false;
             aftertab = false;
-			switch (sym[0])
+	    switch (sym[0])
             {
                 case '\"':
                     inlist = 0;
@@ -152,7 +162,7 @@ void TextGen()
                         hdrdbl = false;
                         H1Gen();
                     }
-					else BItGen();
+		    else BItGen();
                     break;
                 case '\'':
                     aftertab = false;
@@ -174,31 +184,31 @@ void TextGen()
                     }
                     break;
                 case '0'...'9':
-					if (aftertab)
-					{
-						index = true;
-						TextGen();
-					}
-                	if (!index)
-					{
-						aftertab = false;
-						oFile << sym[0];
-						TextGen();
-					}
+		    if (aftertab)
+		    {
+			index = true;
+			TextGen();
+		    }
+                    if (!index)
+	    	    {
+			aftertab = false;
+			oFile << sym[0];
+			TextGen();
+	       	    }
                     break;
-				case '.':
-					if (index)
-					{
-						index = false;
-						NumListGen();
-					}
-					else
-					{
-						aftertab = false;
-						oFile << sym[0];
-						TextGen();
-					}
-					break;
+		case '.':
+	    	    if (index)
+	 	    {
+			index = false;
+			NumListGen();
+		    }
+		    else
+		    {
+			aftertab = false;
+			oFile << sym[0];
+			TextGen();
+		    }
+		    break;
                 case '\x09':
                     TabGen();
                     break;
@@ -216,6 +226,7 @@ void TextGen()
 }
 
 //==== Wraps a header in the 1 level "<h1></h1>" tags ====
+
 void H1Gen()
 {
     if (hdrdbl) oFile << "<h1>";
@@ -224,6 +235,7 @@ void H1Gen()
 }
 
 //==== Wraps a header in the 2 level "<h2></h2>" tags ====
+
 void H2Gen()
 {
     if (hdrsng) oFile << "<h2>";
@@ -232,16 +244,18 @@ void H2Gen()
 }
 
 //==== Treatment of the italic text placed in the unary quotes ====
+
 void ItGen()
 {
     it = !it;
-    if (it) oFile << "<i>";
+    if (it)  oFile << "<i>";
     oFile << sym[0];
     if (!it) oFile << "</i>";
     TextGen();
 }
 
 //==== Treatment of the italic text placed in the double quotes ====
+
 void BItGen()
 {
     bit = !bit;
@@ -252,11 +266,12 @@ void BItGen()
 }
 
 //==== Wraps a list in the "<ul></ul>" tags ====
+
 void SimpListGen()
 {
     inlistp = inlist;
-    inlist = tabs + 1;
-    int i = inlist;
+    inlist  = tabs + 1;
+    int i   = inlist;
     if (inlist > inlistp)
     {
     	lists[inlist] = 'u';
@@ -269,11 +284,12 @@ void SimpListGen()
 }
 
 //==== Wraps a list in the "<ol></ol>" tags ====
+
 void NumListGen()
 {
     inlistp = inlist;
-    inlist = tabs + 1;
-    int i = inlist;
+    inlist  = tabs + 1;
+    int i   = inlist;
     if (inlist > inlistp)
     {
     	lists[inlist] = 'o';
@@ -286,23 +302,25 @@ void NumListGen()
 }
 
 //==== Adds a tag to an element of the list ====
+
 void ListItemGen()
 {
     int i = inlist;
     oFile << '\n';
     for (i; i != 0; i--) oFile << '\t';
     oFile << "<li>";
-    inli = true;
+    inli  = true;
     TextGen();
 }
 
 //==== Treatment of the tabs ====
+
 void TabGen()
 {
     if (inlist <= 0)
     {
     	if (tabs == 0) oFile << "<br />\n";
-    	oFile << "&nbsp;&nbsp;&nbsp;&nbsp;";
+    	oFile << "&nbsp; &nbsp; &nbsp; &nbsp;";
     }
     tabs++;
     aftertab = true;
@@ -310,6 +328,7 @@ void TabGen()
 }
 
 //==== Treatment of the enters ====
+
 void Enters()
 {
     if (inli)
@@ -318,36 +337,37 @@ void Enters()
     	inli = false;
     }
     if (inpar)
-	{
-		oFile << "</p>\n";
-		inpar = false;
-	}
+    {
+	oFile << "</p>\n";
+	inpar = false;
+    }
     first = true;
-    oFile << " E[" << inlist << "_" << inlistp << "; type = " << lists[inlist] << "]";    //==== Trace for the Enters() ====
+    oFile << " E[" << inlist << "_" << inlistp << "; type = " << lists[inlist] << "]";    	//==== Trace for the Enters() ====
     tabs = 0;
     TextGen();
 }
 
 //==== Putting of the closer tags ====
+
 void Closer()
 {
-	oFile << " C[" << inlist << "_" << inlistp << "]";                                    //==== Trace for the Closer() ====
+    oFile << " C[" << inlist << "_" << inlistp << "]";                                    	//==== Trace for the Closer() ====
     int inls = inlistp;
-	for (inls; inls != inlist; inls--)
+    for (inls; inls != inlist; inls--)
+    {
+	oFile << '\n';
+	int i = inls;
+	for (i; i != 0; i--) oFile << '\t';
+	switch (lists[inls])
 	{
-		oFile << '\n';
-		int i = inls;
-		for (i; i != 0; i--) oFile << '\t';
-		switch (lists[inls])
-		{
-			case 'u':
-				oFile << "</ul>\n";
-				break;
-			case 'o':
-				oFile << "</ol>\n";
-				break;
-			default: oFile << "Cthulhu has devoured thy brainz s0m3h0w... h0w?... ";
-		}
-		inlistp--;
-	}
+	case 'u':
+	    oFile << "</ul>\n";
+	    break;
+	case 'o':
+	    oFile << "</ol>\n";
+	    break;
+	default: oFile << "Cthulhu has devoured thy brainz s0m3h0w... h0w?... ";
+        }
+    inlistp--;
+    }
 }
