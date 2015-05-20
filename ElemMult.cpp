@@ -1,5 +1,5 @@
-/*Задание: Разложить число N на простые множители. Пример: 72=1*2*2*2*3*3
-*******Болдырев Александр 13501/3********/
+/*Task: Expand the number into simple multipliers. Example: 72=1*2*2*2*3*3
+*******Boldyrev Alexander 13501/3********/
 #include <iostream>
 using namespace std;
 
@@ -15,7 +15,7 @@ int main()
     {
         while (i <= Num)
         {
-            if (Num%i == 0)
+            if (Num % i == 0)
             {
                 cout << "* " << i << " ";
                 Num /= i;
